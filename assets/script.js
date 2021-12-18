@@ -1,4 +1,5 @@
 const webcam = document.getElementById('webcam')
+const webcamContent = document.getElementById('webcam_content')
 
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -15,9 +16,35 @@ function startVideo() {
     )
 }
 
+function snapshot() {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+
+
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(document.createElement('br'))
+    webcamContent.append(canvas)
+   // document.getElementById("thumb").value = filename;
+    /*$.post("thumb-saver.php", {
+        base:img_data,
+        output:"thumbnails/"+ filename +  '.jpg'
+    }, function( data ) {
+        //alert(data);
+    });*/
+
+    //video.removeEventListener('canplay', snapshot)
+    //video.addEventListener('canplay', snapshot);
+}
+
 webcam.addEventListener('play', () => {
     const canvas = faceapi.createCanvasFromMedia(webcam)
-    const webcamContent = document.getElementById('webcam_content')
     webcamContent.append(canvas)
 
     const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
@@ -29,12 +56,14 @@ webcam.addEventListener('play', () => {
             new faceapi.TinyFaceDetectorOptions()
         ).withFaceLandmarks().withFaceExpressions()
 
-        const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        //const resizedDetections = faceapi.resizeResults(detections, displaySize)
         //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
         //faceapi.draw.drawDetections(canvas, resizedDetections)
-        console.log(detections[0].expressions.happy)
-        if (detections[0].expressions.happy > 0.5) {
-            alert('HAPPY !!!!!!!')
+        if (typeof detections[0].expressions != 'undefined') {
+            console.log(detections[0].expressions.happy)
+            if (detections[0].expressions.happy > 0.5) {
+                snapshot()
+            }
         }
     }, 500)
 })
