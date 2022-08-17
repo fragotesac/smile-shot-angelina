@@ -8,6 +8,7 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="node_modules/face-api.js/dist/face-api.min.js"></script>
     <link href="assets/style.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="prueba.css" rel="stylesheet">
     <script defer src="assets/script.js"></script>
 </head>
 <body>
@@ -17,12 +18,15 @@
             <img class="d-block mx-auto mb-4" src="assets/logo.png" alt="" width="150" height="85">
             <h2>📸😁</h2>
         </div>
-
+    <div class="container text-center">
         <div class="row">
             <div id="webcam_content" class="align-items-center">
-                <video id="webcam" class="col-12" autoplay muted width="800" height="400"></video>
+                <video id="webcam" class="img-fluid" autoplay muted width="800" height="400"></video>
+                <img id="marco"  src="assets/marco.png"  />
             </div>
         </div>
+    </div>
+
     </main>
     <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">© 2021</p>
@@ -35,3 +39,4 @@
 </div>
 </body>
 </html>
+
