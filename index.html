@@ -9,6 +9,7 @@
     <script src="node_modules/face-api.js/dist/face-api.min.js"></script>
     <link href="assets/style.css" rel="stylesheet" crossorigin="anonymous">
     <script defer src="assets/script.js"></script>
+    <script defer src="node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -17,11 +18,15 @@
             <img class="d-block mx-auto mb-4" src="assets/logo.png" alt="" width="150" height="85">
             <h2>📸😁</h2>
         </div>
-
+        <div class="row d-none" id="marco">
+            <img src="assets/marco.png" alt="" width="800" height="400">
+        </div>
         <div class="row">
             <div id="webcam_content" class="align-items-center">
                 <video id="webcam" class="col-12" autoplay muted width="800" height="400"></video>
             </div>
+        </div>
+        <div class="row" id="collect-smiles">
         </div>
     </main>
     <footer class="my-5 pt-5 text-muted text-center text-small">

@@ -17,30 +17,24 @@ function startVideo() {
 }
 
 function snapshot() {
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
 
-    ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+    const canvas = document.createElement('canvas');
+    canvas.width = webcam.videoWidth;
+    canvas.height = webcam.videoHeight;
+    canvas.getContext('2d').drawImage(webcam, 0, 0);
 
+    const img = document.createElement("img");
+    img.src = canvas.toDataURL('image/webp');
 
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(canvas)
-   // document.getElementById("thumb").value = filename;
-    /*$.post("thumb-saver.php", {
-        base:img_data,
-        output:"thumbnails/"+ filename +  '.jpg'
-    }, function( data ) {
-        //alert(data);
-    });*/
-
-    //video.removeEventListener('canplay', snapshot)
-    //video.addEventListener('canplay', snapshot);
+    const contentImage = document.createElement('div')
+    contentImage.className  = 'col-6'
+    contentImage.appendChild(img)
+    document.getElementById('collect-smiles').appendChild(contentImage)
+    debugger
+   $.post( "assets/save-image.php", { img: img.src })
+        .done(function( data ) {
+            console.log( "Guardado " + data );
+        });
 }
 
 webcam.addEventListener('play', () => {
@@ -59,8 +53,8 @@ webcam.addEventListener('play', () => {
         //const resizedDetections = faceapi.resizeResults(detections, displaySize)
         //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
         //faceapi.draw.drawDetections(canvas, resizedDetections)
-        if (typeof detections[0].expressions != 'undefined') {
-            console.log(detections[0].expressions.happy)
+        if (detections.length > 0 && typeof detections[0].expressions != 'undefined') {
+            //console.log(detections[0].expressions.happy)
             if (detections[0].expressions.happy > 0.5) {
                 snapshot()
             }
