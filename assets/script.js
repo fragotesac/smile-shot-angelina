@@ -24,7 +24,7 @@ function snapshot() {
     canvas.width = '800'
 
     ctx.drawImage(webcam, 0, 0, 800, 450)
-    webcamContent.append(canvas)
+    //webcamContent.append(canvas)
 
     $.post('image_manager.php', {
         imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
