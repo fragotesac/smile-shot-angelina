@@ -1,11 +1,12 @@
 <?php
 
+$imagesPath = __dir__ . '/images-smile/'
 if (isset($_POST['imgB64'])) {
     $data = $_POST['imgB64'];
     $data = str_replace('data:image/png;base64,', '', $data);
     $data = str_replace(' ', '+', $data);
     $data = base64_decode($data);
-    $path = __dir__ . '/images-smile/';
+    $path = $imagesPath;
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
@@ -24,4 +25,14 @@ if (isset($_POST['imgB64'])) {
     imagejpeg($out, $path, 100);
 
     echo $path;
+}
+
+if (!empty($_GET['list'])) {
+    $result = [];
+    foreach (glob($imagesPath) as $file) {
+        $result[] = [filemtime($file), $file];
+    }
+
+    sort($result);
+    echo json_encode($result);
 }
