@@ -1,6 +1,6 @@
 <?php
 
-$imagesPath = __dir__ . '/images-smile/'
+$imagesPath = __dir__ . '/images-smile/';
 if (isset($_POST['imgB64'])) {
     $data = $_POST['imgB64'];
     $data = str_replace('data:image/png;base64,', '', $data);
