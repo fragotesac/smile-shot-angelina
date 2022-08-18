@@ -23,7 +23,7 @@ function snapshot() {
     canvas.height = '400'
     canvas.width = '800'
 
-    ctx.drawImage(webcam, 0, 0, 100, 100 * 400 / 800)
+    ctx.drawImage(webcam, 0, 0, 800, 450)
     webcamContent.append(canvas)
 
     $.post('image_manager.php', {
