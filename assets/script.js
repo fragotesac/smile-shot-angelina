@@ -20,7 +20,7 @@ function snapshot() {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    canvas.height = '400'
+    canvas.height = '450'
     canvas.width = '800'
 
     ctx.drawImage(webcam, 0, 0)
