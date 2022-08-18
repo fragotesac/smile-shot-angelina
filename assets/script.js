@@ -20,27 +20,18 @@ function snapshot() {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+    canvas.height = '400'
+    canvas.width = '800'
 
-
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
-    webcamContent.append(document.createElement('br'))
+    ctx.drawImage(webcam, 0, 0)
     webcamContent.append(canvas)
-   // document.getElementById("thumb").value = filename;
-    /*$.post("thumb-saver.php", {
-        base:img_data,
-        output:"thumbnails/"+ filename +  '.jpg'
-    }, function( data ) {
-        //alert(data);
-    });*/
 
-    //video.removeEventListener('canplay', snapshot)
-    //video.addEventListener('canplay', snapshot);
+    $.post('image_manager.php', {
+        imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
+    })
+    .done(function(data) {
+        console.log('Guardado ' + data );
+    });
 }
 
 webcam.addEventListener('play', () => {
@@ -54,14 +45,18 @@ webcam.addEventListener('play', () => {
         const detections = await faceapi.detectAllFaces(
             webcam,
             new faceapi.TinyFaceDetectorOptions()
-        ).withFaceLandmarks().withFaceExpressions()
+        ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
 
-        //const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        //faceapi.draw.drawDetections(canvas, resizedDetections)
+        if (!detections.length) {
+            return
+        }
         if (typeof detections[0].expressions != 'undefined') {
+            const resizedDetections = faceapi.resizeResults(detections, displaySize)
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+            faceapi.draw.drawDetections(canvas, resizedDetections)
+
             console.log(detections[0].expressions.happy)
-            if (detections[0].expressions.happy > 0.5) {
+            if (detections[0].expressions.happy >= 0.5) {
                 snapshot()
             }
         }

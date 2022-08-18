@@ -4,16 +4,15 @@ body {
 }
 
 canvas {
-    position: absolute;
-    left: 0;
+    z-index: 2;
 }
 
 #webcam {
-    position:absolute;
+    position: absolute;
     z-index: -1;
 }
 
 #marco {
-    position:relative;
+    position: absolute;
     z-index: 1;
 }
