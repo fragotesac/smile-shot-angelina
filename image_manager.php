@@ -30,9 +30,9 @@ if (isset($_POST['imgB64'])) {
 if (!empty($_GET['list'])) {
     $result = [];
     foreach (glob($imagesPath . '*') as $file) {
-        $result[] = [filemtime($file), $file];
+        $result[filemtime($file)] = $file;
     }
 
-    sort($result);
+    ksort($result);
     echo json_encode($result);
 }
