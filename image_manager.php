@@ -29,7 +29,7 @@ if (isset($_POST['imgB64'])) {
 
 if (!empty($_GET['list'])) {
     $result = [];
-    foreach (glob($imagesPath) as $file) {
+    foreach (glob($imagesPath . '*') as $file) {
         $result[] = [filemtime($file), $file];
     }
 
