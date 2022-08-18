@@ -1,8 +1,9 @@
 <?php
+
 if (isset($_POST['imgB64'])) {
     $data = $_POST['imgB64'];
-    list($type, $data) = explode(';', $data);
-    list(, $data)      = explode(',', $data);
+    $data = str_replace('data:image/png;base64,', '', $data);
+    $data = str_replace(' ', '+', $data);
     $data = base64_decode($data);
     $path = __dir__ . '/images-smile/';
     if (!file_exists($path)) {

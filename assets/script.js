@@ -60,5 +60,5 @@ webcam.addEventListener('play', () => {
                 snapshot()
             }
         }
-    }, 1000)
+    }, 3000)
 })
