@@ -32,13 +32,29 @@ function snapshot() {
     ctx.drawImage(webcam, 0, 0, 800, 450)
     //webcamContent.append(canvas)
 
-    $.post('image_manager.php', {
-        imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
-    })
-    .done(function(data) {
-        memories()
-        console.log('Guardado ' + data );
-        Swal.close()
+    $.ajax({
+        type: 'POST',
+        url: 'image_manager.php',
+        data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
+        dataType: 'text',
+        beforeSend: function() {
+            debugger
+            Swal.fire({
+                title: 'Capturamos Tu Foto!',
+                text: 'Un momento..',
+                icon: 'info',
+                confirmButtonText: 'Ok'
+            })
+        },
+        complete: function(data) {
+            memories()
+            console.log('Guardado ' + data );
+            Swal.close()
+        },
+        error: function(xhr) {
+            console.log('error', xhr.statusText + xhr.responseText)
+        },
+
     });
 }
 
@@ -67,12 +83,6 @@ webcam.addEventListener('play', () => {
             return
         }
         if (typeof detections[0].expressions != 'undefined') {
-            Swal.fire({
-                title: 'Capturamos Tu Foto!',
-                text: 'Un momento..',
-                icon: 'info',
-                confirmButtonText: 'Ok'
-            })
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
             faceapi.draw.drawDetections(canvas, resizedDetections)
