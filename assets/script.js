@@ -72,9 +72,9 @@ webcam.addEventListener('play', () => {
             document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
 
             if (detections[0].expressions.happy >= 0.5) {
-                $('.happiness-color').style('font-color', '#198754');
+                $('.happiness-color').css('font-color', '#198754');
             } else {
-                $('.happiness-color').style('font-color', '#dc3545');
+                $('.happiness-color').css('font-color', '#dc3545');
             }
 
             console.log(detections[0].expressions.happy)
