@@ -23,7 +23,7 @@ function startVideo() {
 
 }
 
-function snapshot() {
+function snapshot(faceapi, canvas, displaySize) {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
@@ -45,13 +45,18 @@ function snapshot() {
                 icon: 'info',
                 showConfirmButton :false
             })
+
+
+            clearInterval(interval)
         },
         complete: function(data) {
             memories()
             console.log('Guardado ' + data );
             Swal.close()
+            initializeInterval(faceapi, canvas, displaySize)
         },
         error: function(xhr) {
+            initializeInterval(faceapi, canvas, displaySize)
             console.log('error', xhr.statusText + xhr.responseText)
         },
     });
@@ -73,7 +78,7 @@ webcam.addEventListener('play', () => {
     const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
     faceapi.matchDimensions(canvas, displaySize)
 
-    interval = setInterval(() => happinessFaceDetection(faceapi, canvas, displaySize), 100)
+    initializeInterval(faceapi, canvas, displaySize)
 })
 
 async function happinessFaceDetection(faceapi, canvas, displaySize)
@@ -93,28 +98,21 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
 
         console.log(detections[0].expressions.happy)
         if (detections[0].expressions.happy >= 0.5) {
-            snapshot()
             $('.happiness-color').css('color', '#198754');
+            snapshot(faceapi, canvas, displaySize)
         } else {
             $('.happiness-color').css('color', '#dc3545');
         }
-        if (typeof detections[0].expressions != 'undefined') {
-            const resizedDetections = faceapi.resizeResults(detections, displaySize)
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-            faceapi.draw.drawDetections(canvas, resizedDetections)
-            document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
-
-            if (detections[0].expressions.happy >= 0.5) {
-                $('.happiness-color').css('color', '#198754');
-            } else {
-                $('.happiness-color').css('color', '#dc3545');
-            }
-        }
-        console.log(detections[0].expressions.happy)
-        if (detections[0].expressions.happy >= 0.5) {
-            snapshot()
-        }
     }
+}
+
+function initializeInterval(faceapi, canvas, displaySize)
+{
+    if (typeof interval != 'undefined') {
+        clearInterval(interval);
+    }
+
+    interval = setInterval(() => happinessFaceDetection(faceapi, canvas, displaySize), 100)
 }
 
 function memories()
