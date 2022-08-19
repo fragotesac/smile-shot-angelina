@@ -74,12 +74,12 @@ function memories()
             let imgDiv = ''
             for (const item of Object.entries(imgs)) {
                 imgDiv = '<div class="col-4">'
-                imgDiv += '<img width="90%" src="/angelina/images-smile/' + item[1] + '"/>'
+                imgDiv += '<img width="90%" height="90%" style="padding: 5%;" src="/angelina/images-smile/' + item[1] + '"/>'
                 imgDiv += '<div/>'
 
                 $('#memories').append(imgDiv)
                 if (i > 11) {
-                    return
+                    continue
                 }
             }
         });
