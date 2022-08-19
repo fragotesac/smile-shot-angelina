@@ -110,7 +110,7 @@ function initializeInterval(faceapi, canvas, displaySize)
         clearInterval(interval);
     }
 
-    interval = setInterval(() => happinessFaceDetection(faceapi, canvas, displaySize), 500)
+    interval = setInterval(() => happinessFaceDetection(faceapi, canvas, displaySize), 1500)
 }
 
 function memories()
