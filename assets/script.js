@@ -1,5 +1,6 @@
 const webcam = document.getElementById('webcam')
 const webcamContent = document.getElementById('webcam_content')
+let interval;
 
 Promise.all([
     faceapi.nets.ssdMobilenetv1.loadFromUri('models'),
@@ -58,29 +59,47 @@ function snapshot() {
     });
 }
 
+let playCanvas;
+let playDisplaySize;
+
 webcam.addEventListener('play', () => {
-    let canvas = document.getElementById('snapshot-canvas')
+    let playCanvas = document.getElementById('snapshot-canvas')
     var marco = document.getElementById('marco');
 
-    if (!canvas) {
-        canvas = faceapi.createCanvasFromMedia(webcam);
-        canvas.setAttribute('id', 'snapshot-canvas')
-        webcamContent.append(canvas)
+    if (!playCanvas) {
+        playCanvas = faceapi.createCanvasFromMedia(webcam);
+        playCanvas.setAttribute('id', 'snapshot-canvas')
+        webcamContent.append(playCanvas)
     }
-    webcamContent.append(canvas)
+    webcamContent.append(playCanvas)
     marco.style.width =  webcam.offsetWidth + "px"
     marco.style.height =  webcam.offsetHeight + "px"
 
-    const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
-    faceapi.matchDimensions(canvas, displaySize)
+    const displaySize = playDisplaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
+    faceapi.matchDimensions(playCanvas, playDisplaySize)
 
-    setInterval(async () => {
-        const detections = await faceapi.detectAllFaces(
-            webcam
-        ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
+    interval = setInterval(happinessFaceDetection(), 100)
+})
 
-        if (!detections.length) {
-            return
+async function happinessFaceDetection()
+{
+    const detections = await faceapi.detectAllFaces(
+        webcam
+    ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
+
+    if (!detections.length) {
+        return
+    }
+    if (typeof detections[0].expressions != 'undefined') {
+        const resizedDetections = faceapi.resizeResults(detections, playDisplaySize)
+        playCanvas.getContext('2d').clearRect(0, 0, playCanvas.width, playCanvas.height)
+        faceapi.draw.drawDetections(playCanvas, resizedDetections)
+        document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
+
+        if (detections[0].expressions.happy >= 0.5) {
+            $('.happiness-color').css('color', '#198754');
+        } else {
+            $('.happiness-color').css('color', '#dc3545');
         }
         if (typeof detections[0].expressions != 'undefined') {
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
@@ -93,14 +112,13 @@ webcam.addEventListener('play', () => {
             } else {
                 $('.happiness-color').css('color', '#dc3545');
             }
-
-            console.log(detections[0].expressions.happy)
-            if (detections[0].expressions.happy >= 0.5) {
-                snapshot()
-            }
         }
-    }, 100)
-})
+        console.log(detections[0].expressions.happy)
+        if (detections[0].expressions.happy >= 0.5) {
+            snapshot()
+        }
+    }
+}
 
 function memories()
 {
