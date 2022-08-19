@@ -78,6 +78,7 @@ function memories()
                 imgDiv += '<div/>'
 
                 $('#memories').append(imgDiv)
+                ++i
                 if (i > 11) {
                     continue
                 }
