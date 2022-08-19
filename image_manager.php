@@ -33,6 +33,6 @@ if (!empty($_GET['list'])) {
         $result[filemtime($file)] = str_replace($imagesPath, '', $file);
     }
 
-    ksort($result);
+    krsort($result);
     echo json_encode($result);
 }
