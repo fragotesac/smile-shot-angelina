@@ -34,5 +34,16 @@ if (!empty($_GET['list'])) {
     }
 
     krsort($result);
-    echo json_encode($result);
+
+    $newList = [];
+    $i = 0;
+    foreach ($result as $image) {
+        if ($i > 11) {
+            break;
+        }
+
+        $newList[] = $image;
+        ++$i;
+    }
+    echo json_encode($newList);
 }

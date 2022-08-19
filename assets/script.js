@@ -70,7 +70,6 @@ function memories()
         .done(function(data) {
             $('#memories').html('')
             let imgs = JSON.parse(data)
-            let i = 0
             let imgDiv = ''
             for (const item of Object.entries(imgs)) {
                 imgDiv = '<div class="col-4">'
@@ -78,10 +77,6 @@ function memories()
                 imgDiv += '<div/>'
 
                 $('#memories').append(imgDiv)
-                ++i
-                if (i > 11) {
-                    continue
-                }
             }
         });
 }
