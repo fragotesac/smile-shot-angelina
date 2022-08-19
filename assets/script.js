@@ -36,6 +36,7 @@ function snapshot() {
         imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
     })
     .done(function(data) {
+        Swal.close()
         memories()
         console.log('Guardado ' + data );
     });
@@ -66,6 +67,12 @@ webcam.addEventListener('play', () => {
             return
         }
         if (typeof detections[0].expressions != 'undefined') {
+            Swal.fire({
+                title: 'Capturamos Tu Foto!',
+                text: 'Un momento..',
+                icon: 'info',
+                confirmButtonText: 'Ok'
+            })
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
             faceapi.draw.drawDetections(canvas, resizedDetections)
