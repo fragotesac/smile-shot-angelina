@@ -59,7 +59,7 @@ webcam.addEventListener('play', () => {
     const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
     faceapi.matchDimensions(canvas, displaySize)
 
-    interval = setInterval(happinessFaceDetection(canvas, displaySize), 100)
+    interval = setInterval(happinessFaceDetection(faceapi, canvas, displaySize), 100)
 })
 
 async function happinessFaceDetection(faceapi, canvas, displaySize)
