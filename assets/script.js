@@ -47,7 +47,7 @@ let playCanvas;
 let playDisplaySize;
 
 webcam.addEventListener('play', () => {
-    let playCanvas = document.getElementById('snapshot-canvas')
+    let canvas = playCanvas = document.getElementById('snapshot-canvas')
     var marco = document.getElementById('marco');
 
     if (!playCanvas) {
