@@ -36,9 +36,9 @@ function snapshot() {
         imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
     })
     .done(function(data) {
-        Swal.close()
         memories()
         console.log('Guardado ' + data );
+        Swal.close()
     });
 }
 
