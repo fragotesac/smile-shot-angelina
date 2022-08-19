@@ -43,7 +43,7 @@ function snapshot() {
                 title: 'Capturamos Tu Foto!',
                 text: 'Un momento..',
                 icon: 'info',
-                confirmButtonText: 'Ok'
+                showConfirmButton :false
             })
         },
         complete: function(data) {
