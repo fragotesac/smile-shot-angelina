@@ -89,9 +89,9 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
         return
     }
     if (typeof detections[0].expressions != 'undefined') {
-        const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        faceapi.draw.drawDetections(canvas, resizedDetections)
+        //const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        //faceapi.draw.drawDetections(canvas, resizedDetections)
         document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
 
         console.log(detections[0].expressions.happy)
