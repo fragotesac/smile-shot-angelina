@@ -39,15 +39,13 @@ function snapshot(faceapi, canvas, displaySize) {
         data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
         dataType: 'text',
         beforeSend: function() {
+            clearInterval(interval)
             Swal.fire({
                 title: 'Capturamos Tu Foto!',
                 text: 'Un momento..',
                 icon: 'info',
                 confirmButtonText: 'Ok'
             })
-
-
-            clearInterval(interval)
         },
         complete: function(data) {
             memories()
