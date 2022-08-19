@@ -1,5 +1,6 @@
 const webcam = document.getElementById('webcam')
 const webcamContent = document.getElementById('webcam_content')
+let interval;
 
 Promise.all([
     faceapi.nets.ssdMobilenetv1.loadFromUri('models'),
@@ -57,33 +58,36 @@ webcam.addEventListener('play', () => {
     const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
     faceapi.matchDimensions(canvas, displaySize)
 
-    setInterval(async () => {
-        const detections = await faceapi.detectAllFaces(
-            webcam
-        ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
-
-        if (!detections.length) {
-            return
-        }
-        if (typeof detections[0].expressions != 'undefined') {
-            const resizedDetections = faceapi.resizeResults(detections, displaySize)
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-            faceapi.draw.drawDetections(canvas, resizedDetections)
-            document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
-
-            if (detections[0].expressions.happy >= 0.5) {
-                $('.happiness-color').css('color', '#198754');
-            } else {
-                $('.happiness-color').css('color', '#dc3545');
-            }
-
-            console.log(detections[0].expressions.happy)
-            if (detections[0].expressions.happy >= 0.5) {
-                snapshot()
-            }
-        }
-    }, 100)
+    interval = setInterval(happinessFaceDetection(), 100)
 })
+
+async function happinessFaceDetection()
+{
+    const detections = await faceapi.detectAllFaces(
+        webcam
+    ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
+
+    if (!detections.length) {
+        return
+    }
+    if (typeof detections[0].expressions != 'undefined') {
+        const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        faceapi.draw.drawDetections(canvas, resizedDetections)
+        document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
+
+        if (detections[0].expressions.happy >= 0.5) {
+            $('.happiness-color').css('color', '#198754');
+        } else {
+            $('.happiness-color').css('color', '#dc3545');
+        }
+
+        console.log(detections[0].expressions.happy)
+        if (detections[0].expressions.happy >= 0.5) {
+            snapshot()
+        }
+    }
+}
 
 function memories()
 {
