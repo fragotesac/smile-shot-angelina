@@ -39,7 +39,6 @@ function snapshot() {
         data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
         dataType: 'text',
         beforeSend: function() {
-            debugger
             Swal.fire({
                 title: 'Capturamos Tu Foto!',
                 text: 'Un momento..',
@@ -55,7 +54,6 @@ function snapshot() {
         error: function(xhr) {
             console.log('error', xhr.statusText + xhr.responseText)
         },
-
     });
 }
 
