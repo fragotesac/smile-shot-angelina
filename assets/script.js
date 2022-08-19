@@ -93,26 +93,10 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
 
         console.log(detections[0].expressions.happy)
         if (detections[0].expressions.happy >= 0.5) {
-            snapshot()
             $('.happiness-color').css('color', '#198754');
+            snapshot()
         } else {
             $('.happiness-color').css('color', '#dc3545');
-        }
-        if (typeof detections[0].expressions != 'undefined') {
-            const resizedDetections = faceapi.resizeResults(detections, displaySize)
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-            faceapi.draw.drawDetections(canvas, resizedDetections)
-            document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
-
-            if (detections[0].expressions.happy >= 0.5) {
-                $('.happiness-color').css('color', '#198754');
-            } else {
-                $('.happiness-color').css('color', '#dc3545');
-            }
-        }
-        console.log(detections[0].expressions.happy)
-        if (detections[0].expressions.happy >= 0.5) {
-            snapshot()
         }
     }
 }
