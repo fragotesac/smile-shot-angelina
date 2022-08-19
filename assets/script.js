@@ -96,7 +96,9 @@ async function happinessFaceDetection()
         faceapi.draw.drawDetections(playCanvas, resizedDetections)
         document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
 
+        console.log(detections[0].expressions.happy)
         if (detections[0].expressions.happy >= 0.5) {
+            snapshot();
             $('.happiness-color').css('color', '#198754');
         } else {
             $('.happiness-color').css('color', '#dc3545');
