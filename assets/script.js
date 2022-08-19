@@ -39,6 +39,7 @@ function snapshot() {
     .done(function(data) {
         memories()
         console.log('Guardado ' + data );
+        Swal.close()
     });
 }
 
