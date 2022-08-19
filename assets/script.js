@@ -2,6 +2,7 @@ const webcam = document.getElementById('webcam')
 const webcamContent = document.getElementById('webcam_content')
 
 Promise.all([
+    faceapi.nets.ssdMobilenetv1.loadFromUri('models'),
     faceapi.nets.tinyFaceDetector.loadFromUri('models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('models'),
     faceapi.nets.faceRecognitionNet.loadFromUri('models'),
@@ -58,8 +59,7 @@ webcam.addEventListener('play', () => {
 
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(
-            webcam,
-            new faceapi.TinyFaceDetectorOptions()
+            webcam
         ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
 
         if (!detections.length) {
