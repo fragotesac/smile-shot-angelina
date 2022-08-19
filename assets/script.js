@@ -75,7 +75,7 @@ webcam.addEventListener('play', () => {
                 snapshot()
             }
         }
-    }, 3000)
+    }, 500)
 })
 
 function memories()
