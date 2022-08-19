@@ -14,6 +14,11 @@ function startVideo() {
         stream => webcam.srcObject = stream,
         err => console.log(err)
     )
+    setTimeout(function(){
+        $('#loader-page').addClass('d-none')
+        $('#shoot').removeClass('d-none')
+    }, 3000)
+
 }
 
 function snapshot() {
