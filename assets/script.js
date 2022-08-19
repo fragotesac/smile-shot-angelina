@@ -33,13 +33,27 @@ function snapshot() {
     ctx.drawImage(webcam, 0, 0, 800, 450)
     //webcamContent.append(canvas)
 
-    $.post('image_manager.php', {
-        imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
-    })
-    .done(function(data) {
-        memories()
-        console.log('Guardado ' + data );
-        Swal.close()
+    $.ajax({
+        type: 'POST',
+        url: 'image_manager.php',
+        data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
+        dataType: 'text',
+        beforeSend: function() {
+            Swal.fire({
+                title: 'Capturamos Tu Foto!',
+                text: 'Un momento..',
+                icon: 'info',
+                confirmButtonText: 'Ok'
+            })
+        },
+        complete: function(data) {
+            memories()
+            console.log('Guardado ' + data );
+            Swal.close()
+        },
+        error: function(xhr) {
+            console.log('error', xhr.statusText + xhr.responseText)
+        },
     });
 }
 
@@ -83,6 +97,22 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
             $('.happiness-color').css('color', '#198754');
         } else {
             $('.happiness-color').css('color', '#dc3545');
+        }
+        if (typeof detections[0].expressions != 'undefined') {
+            const resizedDetections = faceapi.resizeResults(detections, displaySize)
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+            faceapi.draw.drawDetections(canvas, resizedDetections)
+            document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
+
+            if (detections[0].expressions.happy >= 0.5) {
+                $('.happiness-color').css('color', '#198754');
+            } else {
+                $('.happiness-color').css('color', '#dc3545');
+            }
+        }
+        console.log(detections[0].expressions.happy)
+        if (detections[0].expressions.happy >= 0.5) {
+            snapshot()
         }
     }
 }
