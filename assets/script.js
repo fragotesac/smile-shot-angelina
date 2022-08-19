@@ -30,6 +30,7 @@ function snapshot() {
         imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]
     })
     .done(function(data) {
+        memories()
         console.log('Guardado ' + data );
     });
 }
