@@ -43,29 +43,26 @@ function snapshot() {
     });
 }
 
-let playCanvas;
-let playDisplaySize;
-
 webcam.addEventListener('play', () => {
-    let canvas = playCanvas = document.getElementById('snapshot-canvas')
+    let canvas = document.getElementById('snapshot-canvas')
     var marco = document.getElementById('marco');
 
-    if (!playCanvas) {
-        playCanvas = faceapi.createCanvasFromMedia(webcam);
-        playCanvas.setAttribute('id', 'snapshot-canvas')
-        webcamContent.append(playCanvas)
+    if (!canvas) {
+        canvas = faceapi.createCanvasFromMedia(webcam);
+        canvas.setAttribute('id', 'snapshot-canvas')
+        webcamContent.append(canvas)
     }
-    webcamContent.append(playCanvas)
+    webcamContent.append(canvas)
     marco.style.width =  webcam.offsetWidth + "px"
     marco.style.height =  webcam.offsetHeight + "px"
 
-    const displaySize = playDisplaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
-    faceapi.matchDimensions(playCanvas, playDisplaySize)
+    const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
+    faceapi.matchDimensions(canvas, displaySize)
 
-    interval = setInterval(happinessFaceDetection(), 100)
+    interval = setInterval(happinessFaceDetection(canvas, displaySize), 100)
 })
 
-async function happinessFaceDetection()
+async function happinessFaceDetection(faceapi, canvas, displaySize)
 {
     const detections = await faceapi.detectAllFaces(
         webcam
@@ -75,14 +72,14 @@ async function happinessFaceDetection()
         return
     }
     if (typeof detections[0].expressions != 'undefined') {
-        const resizedDetections = faceapi.resizeResults(detections, playDisplaySize)
-        playCanvas.getContext('2d').clearRect(0, 0, playCanvas.width, playCanvas.height)
-        faceapi.draw.drawDetections(playCanvas, resizedDetections)
+        const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        faceapi.draw.drawDetections(canvas, resizedDetections)
         document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
 
         console.log(detections[0].expressions.happy)
         if (detections[0].expressions.happy >= 0.5) {
-            snapshot();
+            snapshot()
             $('.happiness-color').css('color', '#198754');
         } else {
             $('.happiness-color').css('color', '#dc3545');
