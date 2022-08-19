@@ -12,7 +12,13 @@ Promise.all([
 
 function startVideo() {
     navigator.getUserMedia(
-        {video: {}},
+        {
+            video: {
+                width: { ideal: 1920 },
+                height: { ideal: 1080 },
+                facingMode: "environment"
+            }
+        },
         stream => webcam.srcObject = stream,
         err => console.log(err)
     )
