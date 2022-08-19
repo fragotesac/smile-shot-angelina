@@ -62,3 +62,24 @@ webcam.addEventListener('play', () => {
         }
     }, 3000)
 })
+
+function memories()
+{
+    $.get('image_manager.php?list=1')
+        .done(function(data) {
+            $('#memories').html('')
+            let imgs = JSON.parse(data)
+            let i = 0
+            let imgDiv = ''
+            for (const item of Object.entries(imgs)) {
+                imgDiv = '<div class="col-4">'
+                imgDiv += '<img src="/images-smile/' + imgs[1] + '"/>'
+                imgDiv += '<div/>'
+
+                $('#memories').append(imgDiv)
+                if (i > 11) {
+                    return
+                }
+            }
+        });
+}
