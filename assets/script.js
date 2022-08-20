@@ -16,7 +16,8 @@ function startVideo() {
             video: {
                 width: { ideal: 1920 },
                 height: { ideal: 1080 },
-                facingMode: "environment"
+                facingMode: "environment",
+                frameRate: {ideal: 10, max: 30}
             }
         },
         stream => webcam.srcObject = stream,
