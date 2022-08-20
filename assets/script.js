@@ -99,7 +99,13 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
         //const resizedDetections = faceapi.resizeResults(detections, displaySize)
         //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
         //faceapi.draw.drawDetections(canvas, resizedDetections)
-        document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
+        document.getElementById('nivelFelicidad').classList.add('hide');
+        setTimeout(function() {
+            document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
+        }, 500);
+        setTimeout(function() {
+            document.getElementById('nivelFelicidad').classList.remove('hide');
+        }, 500);
 
         console.log(detections[0].expressions.happy)
         if (detections[0].expressions.happy >= 0.5) {

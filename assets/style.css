@@ -203,3 +203,12 @@ h1.loader-title {
         transform: rotate(45deg);
     }
 }
+
+#nivelFelicidad {
+    opacity: 1;
+    transition: all 0.5s;
+}
+
+#nivelFelicidad.hide {
+    opacity: 0;
+}
