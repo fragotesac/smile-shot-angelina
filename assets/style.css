@@ -210,11 +210,10 @@ h1.loader-title {
 }
 .wrapper h1 {
     color: #fff;
-    font-size: 92px;
-    text-transform: uppercase;
+    font-size: 1.8em;
     font-weight: 700;
     font-family: "Josefin Sans", sans-serif;
-    background: linear-gradient(to right, #095fab 10%, #25abe8 50%, #57d75b 60%);
+    background: linear-gradient(to right, #eb0a53 10%, #c7021c 50%, #000000 60%);
     background-size: auto auto;
     background-clip: border-box;
     background-size: 200% auto;
