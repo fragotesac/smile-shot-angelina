@@ -6,7 +6,7 @@ $imagesPath = __dir__ . '/images-smile/';
 $imagenes = [];
 foreach (glob($imagesPath . '*') as $file) {
     $imagenes[] = [
-            'path' => $url . '/images-smile/' . str_replace($imagesPath, '', $file),
+            'path' => $url . '/angelina/images-smile/' . str_replace($imagesPath, '', $file),
             'name' => str_replace($imagesPath, '', $file),
             'created' => filectime($file)
     ];
@@ -18,15 +18,17 @@ usort($imagenes, function($a, $b) {
 ?>
 <!-- Gallery -->
 <div class="container">
-    <div class="row py-1">
-        <h1 class="text-center">Galeria</h1>
+    <div class="row py-1 ">
+        <div class="bg-white">
+            <h1 class="text-center ">Galeria</h1>
+        </div>
     </div>
     <div class="row">
             <div style="text-align: right">
-                <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+                <a class="btn btn-lg btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
                     <i class="fa fa-arrow-left"></i>
                 </a>
-                <a class="btn btn-primary mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
+                <a class="btn btn-lg btn-primary mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
                     <i class="fa fa-arrow-right"></i>
                 </a>
             </div>
