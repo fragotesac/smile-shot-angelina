@@ -10,7 +10,7 @@ Promise.all([
     faceapi.nets.faceExpressionNet.loadFromUri('models')
 ]).then(startVideo)
 
-function startVideo() {
+async function startVideo() {
     navigator.getUserMedia(
         {
             video: {
@@ -83,6 +83,38 @@ webcam.addEventListener('play', () => {
     const displaySize = { width: webcam.offsetWidth, height: webcam.offsetHeight }
     faceapi.matchDimensions(canvas, displaySize)
 
+    setInterval(async () => {
+        const detections = await faceapi.detectAllFaces(
+            webcam
+        ).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        if (resizedDetections.length > 0) {
+            resizedDetections.forEach(detection => {
+                const box = detection.detection.box;
+                if (box.x > 0 && box.y > 0 && box.width > 0 && box.height > 0) {
+                    const happy = detection.expressions.happy
+                    const levelHappy = (Math.floor((happy) * 100)) + '%'
+                    const drawOptions = {
+                        label: 'Felicidad ' + levelHappy,
+                        lineWidth: 2,
+                        boxColor: 'rgba(32,219,98,0.38)'
+                    }
+
+                    if (happy >= 0.5) {
+                        drawOptions.boxColor = '#198754';
+                    } else {
+                        drawOptions.boxColor = '#dc3545';
+                    }
+
+                    const drawBox = new faceapi.draw.DrawBox(box, drawOptions);
+                    drawBox.draw(canvas);
+                }
+            });
+            faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+        }
+    }, 100);
+
     initializeInterval(faceapi, canvas, displaySize)
 })
 
@@ -95,20 +127,14 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
     if (!detections.length) {
         return
     }
-    if (typeof detections[0].expressions != 'undefined') {
-        //const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        //faceapi.draw.drawDetections(canvas, resizedDetections)
-        document.getElementById('nivelFelicidad').innerText = Math.floor((detections[0].expressions.happy) * 100) + '%'
 
-        console.log(detections[0].expressions.happy)
-        if (detections[0].expressions.happy >= 0.5) {
-            $('.happiness-color').css('color', '#198754');
+    detections.forEach(detection => {
+        let happy = detection.expressions.happy
+        if (happy >= 0.5) {
             snapshot(faceapi, canvas, displaySize)
-        } else {
-            $('.happiness-color').css('color', '#dc3545');
+            return false;
         }
-    }
+    });
 }
 
 function initializeInterval(faceapi, canvas, displaySize)
@@ -122,17 +148,22 @@ function initializeInterval(faceapi, canvas, displaySize)
 
 function memories()
 {
+    const memories = $('#memories')
     $.get('image_manager.php?list=1')
         .done(function(data) {
-            $('#memories').html('')
+            memories.html('')
             let imgs = JSON.parse(data)
             let imgDiv = ''
             for (const item of Object.entries(imgs)) {
-                imgDiv = '<div class="col-4">'
-                imgDiv += '<img width="90%" height="90%" style="padding: 5%;" src="/angelina/images-smile/' + item[1] + '"/>'
-                imgDiv += '<div/>'
-
-                $('#memories').append(imgDiv)
+                imgDiv = `
+                    <div class="col-12 mb-4 mb-lg-0">
+                        <img
+                                src="/angelina/images-smile/${item[1]}"
+                                class="w-100 shadow-1-strong rounded mb-4"
+                                alt=""
+                        />
+                    </div>`
+                memories.append(imgDiv)
             }
         });
 }

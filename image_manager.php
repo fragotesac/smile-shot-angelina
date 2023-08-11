@@ -1,5 +1,6 @@
 <?php
-
+use PHPMailer\PHPMailer\PHPMailer;
+require_once 'global.php';
 $imagesPath = __dir__ . '/images-smile/';
 if (isset($_POST['imgB64'])) {
     $data = $_POST['imgB64'];
@@ -13,7 +14,7 @@ if (isset($_POST['imgB64'])) {
     $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
 
-    $border = __DIR__ . '/assets/marco.png';
+    $border = __DIR__ . '/assets/marco_2023_08_11.png';
     $png = imagecreatefrompng($border);
     $jpeg = imagecreatefromjpeg($path);
 
@@ -31,6 +32,7 @@ if (!empty($_GET['list'])) {
     $result = [];
     foreach (glob($imagesPath . '*') as $file) {
         $result[filemtime($file)] = str_replace($imagesPath, '', $file);
+        //$result[filemtime($file)] = $url . '/images-smile/' . str_replace($imagesPath, '', $file);
     }
 
     krsort($result);
@@ -38,7 +40,7 @@ if (!empty($_GET['list'])) {
     $newList = [];
     $i = 0;
     foreach ($result as $image) {
-        if ($i > 11) {
+        if ($i > 3) {
             break;
         }
 
@@ -46,4 +48,53 @@ if (!empty($_GET['list'])) {
         ++$i;
     }
     echo json_encode($newList);
+}
+
+if (isset($_GET['enviar_fotos'])) {
+    require_once "vendor/autoload.php";
+    $mail = new PHPMailer;
+    $mail->SMTPDebug = 0;
+    $mail->isSMTP();
+    //credential
+    $mail->Host = "smtp.gmail.com";
+    $mail->SMTPAuth = true;
+    $mail->Username = "prueba19992412@gmail.com";
+    $mail->Password = "cstxdnbyobcqdxkj";
+    $mail->SMTPSecure = "ssl";
+    $mail->Port = 465;
+    $mail->From = "francis@fragote.com";
+    $mail->CharSet = "UTF-8";
+    $mail->FromName = "Francis Gonzales";
+    $mail->isHTML(true);
+    $mail->Subject = "Cumpleaños de Angelina";
+
+    $texto = "<p>Hola </p>";
+    $texto .= "<p>Quiero expresar mi más sincero agradecimiento por asistir al cumpleaños de mi hija. Fue maravilloso contar con tu presencia y ver la alegría que le brindaste. Tu amabilidad y cariño hicieron que el día fuera aún más especial. Gracias por hacer parte de este hermoso recuerdo.</p>";
+    $texto .= "<p>Con aprecio,</p>";
+    $texto .= "<p>Francis Gonzales</p>";
+    $mail->Body = $texto;
+
+    $email = $_POST['email'];
+    $images = $_POST['images'];
+    $mail->addAddress($email);
+
+    error_log(print_r(['tipo' => 'fotos-angelina', 'email' => $email, 'fotos' => $images],1));
+
+    if (!empty($images)) {
+        foreach ($images as $image) {
+            if (file_exists(__DIR__ . '/images-smile/' . $image)) {
+                $mail->addAttachment(__DIR__ . '/images-smile/' . $image);
+            }
+        }
+    }
+
+    $sendEmail = $mail->send();
+    if(!$sendEmail) {
+        error_log(print_r($mail->ErrorInfo));
+    }
+
+    echo json_encode([
+        'result' => $sendEmail
+    ]);
+    exit;
 }
