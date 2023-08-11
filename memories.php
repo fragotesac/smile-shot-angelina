@@ -47,12 +47,11 @@ usort($imagenes, function($a, $b) {
                                 <?php if ($j < $totalImagenes): ?>
                                         <div class="col-md-4 mb-3">
                                             <div class="card">
-                                                <img class="img-fluid" alt="" src="<?= $imagenes[$j]['path'] ?>">
                                                 <div class="card-body">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="<?= $imagenes[$j]['name'] ?>" id="img-<?= $j ?>">
                                                         <label class="form-check-label" for="img-<?= $j ?>">
-                                                            Seleccionar
+                                                            <img class="img-fluid" alt="" src="<?= $imagenes[$j]['path'] ?>">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -69,8 +68,8 @@ usort($imagenes, function($a, $b) {
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <button id="seleccionar-fotos" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enviar-fotos-modal">Seleccionar</button>
+        <div class="col-12 text-center">
+            <button id="seleccionar-fotos" type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#enviar-fotos-modal">Enviar por correo</button>
         </div>
     </div>
 </div>
