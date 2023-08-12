@@ -64,5 +64,5 @@
 
 
 <script src="node_modules/@vladmandic/face-api/dist/face-api.js"></script>
-<script defer src="assets/script.js"></script>
+<script defer src="assets/script.js?v=20230812113100"></script>
 <?php require_once 'footer.php'?>
