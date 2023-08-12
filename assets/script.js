@@ -45,6 +45,7 @@ function snapshot(faceapi, canvas, displaySize) {
         url: 'image_manager.php',
         data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
         dataType: 'text',
+        async: false,
         beforeSend: function() {
             clearInterval(interval)
             Swal.fire({
@@ -68,7 +69,7 @@ function snapshot(faceapi, canvas, displaySize) {
 
             setTimeout(function() {
                 initializeInterval(faceapi, canvas, displaySize)
-            }, 4000);
+            }, 2000);
         },
         error: function(xhr) {
             initializeInterval(faceapi, canvas, displaySize)
@@ -138,14 +139,20 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
         return
     }
 
-    detections.forEach(detection => {
-        let happy = detection.expressions.happy
-        if (happy >= 0.5) {
-            clearInterval(interval)
-            snapshot(faceapi, canvas, displaySize)
-            return false;
+    try {
+        detections.forEach(detection => {
+            let happy = detection.expressions.happy
+            if (happy >= 0.5) {
+                clearInterval(interval)
+                snapshot(faceapi, canvas, displaySize)
+                throw new Error('break');
+            }
+        });
+    } catch (e) {
+        if (e.message !== "break") {
+            throw e;
         }
-    });
+    }
 }
 
 function initializeInterval(faceapi, canvas, displaySize)

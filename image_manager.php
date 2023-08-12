@@ -56,10 +56,10 @@ if (isset($_GET['enviar_fotos'])) {
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
     //credential
-    $mail->Host = "smtp.gmail.com";
+    $mail->Host = "mail.fragote.com";
     $mail->SMTPAuth = true;
-    $mail->Username = "prueba19992412@gmail.com";
-    $mail->Password = "cstxdnbyobcqdxkj";
+    $mail->Username = "angelina@fragote.com";
+    $mail->Password = "angelina#3011ang$";
     $mail->SMTPSecure = "ssl";
     $mail->Port = 465;
     $mail->From = "francis@fragote.com";
