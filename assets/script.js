@@ -48,17 +48,27 @@ function snapshot(faceapi, canvas, displaySize) {
         beforeSend: function() {
             clearInterval(interval)
             Swal.fire({
-                title: 'Capturamos Tu Foto!',
+                title: 'Procesando',
                 text: 'Un momento..',
                 icon: 'info',
-                showConfirmButton :false
+                showConfirmButton :false,
+                timer: 1000
             })
         },
         complete: function(data) {
             memories()
             console.log('Guardado ' + data );
-            Swal.close()
-            initializeInterval(faceapi, canvas, displaySize)
+            Swal.fire({
+                title: 'Foto Capturada!',
+                text: 'Un momento..',
+                icon: 'info',
+                showConfirmButton :false,
+                timer: 2000
+            })
+
+            setTimeout(function() {
+                initializeInterval(faceapi, canvas, displaySize)
+            }, 4000);
         },
         error: function(xhr) {
             initializeInterval(faceapi, canvas, displaySize)
@@ -131,6 +141,7 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
     detections.forEach(detection => {
         let happy = detection.expressions.happy
         if (happy >= 0.5) {
+            clearInterval(interval)
             snapshot(faceapi, canvas, displaySize)
             return false;
         }
