@@ -56,13 +56,13 @@ if (isset($_GET['enviar_fotos'])) {
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
     //credential
-    $mail->Host = "mail.fragote.com";
+    $mail->Host = "";
     $mail->SMTPAuth = true;
-    $mail->Username = "angelina@fragote.com";
-    $mail->Password = "angelina#3011ang$";
+    $mail->Username = "";
+    $mail->Password = "";
     $mail->SMTPSecure = "ssl";
     $mail->Port = 465;
-    $mail->From = "francis@fragote.com";
+    $mail->From = "";
     $mail->CharSet = "UTF-8";
     $mail->FromName = "Francis Gonzales";
     $mail->isHTML(true);
@@ -71,7 +71,7 @@ if (isset($_GET['enviar_fotos'])) {
     $texto = "<p>Hola </p>";
     $texto .= "<p>Quiero expresar mi más sincero agradecimiento por asistir al cumpleaños de mi hija. Fue maravilloso contar con tu presencia y ver la alegría que le brindaste. Tu amabilidad y cariño hicieron que el día fuera aún más especial. Gracias por hacer parte de este hermoso recuerdo.</p>";
     $texto .= "<p>Con aprecio,</p>";
-    $texto .= "<p>Francis Gonzales</p>";
+    $texto .= "<p></p>";
     $mail->Body = $texto;
 
     $email = $_POST['email'];
