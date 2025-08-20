@@ -14,7 +14,7 @@ if (isset($_POST['imgB64'])) {
     $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
 
-    $border = __DIR__ . '/assets/marco_2023_08_11.png';
+    $border = __DIR__ . '/assets/marco_2025.png';
     $png = imagecreatefrompng($border);
     $jpeg = imagecreatefromjpeg($path);
 
