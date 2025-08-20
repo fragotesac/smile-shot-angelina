@@ -6,7 +6,7 @@ $imagesPath = __dir__ . '/images-smile/';
 $imagenes = [];
 foreach (glob($imagesPath . '*') as $file) {
     $imagenes[] = [
-            'path' => $url . '/angelina/images-smile/' . str_replace($imagesPath, '', $file),
+            'path' => $url . '/images-smile/' . str_replace($imagesPath, '', $file),
             'name' => str_replace($imagesPath, '', $file),
             'created' => filectime($file)
     ];
