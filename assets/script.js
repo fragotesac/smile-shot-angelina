@@ -112,7 +112,7 @@ webcam.addEventListener('play', () => {
                         boxColor: 'rgba(32,219,98,0.38)'
                     }
 
-                    if (happy >= 0.5) {
+                    if (happy >= 0.7) {
                         drawOptions.boxColor = '#198754';
                     } else {
                         drawOptions.boxColor = '#dc3545';
@@ -142,7 +142,7 @@ async function happinessFaceDetection(faceapi, canvas, displaySize)
     try {
         detections.forEach(detection => {
             let happy = detection.expressions.happy
-            if (happy >= 0.5) {
+            if (happy >= 0.7) {
                 clearInterval(interval)
                 snapshot(faceapi, canvas, displaySize)
                 throw new Error('break');
