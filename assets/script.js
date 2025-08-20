@@ -176,7 +176,7 @@ function memories()
                 imgDiv = `
                     <div class="col-12 mb-4 mb-lg-0">
                         <img
-                                src="/angelina/images-smile/${item[1]}"
+                                src="images-smile/${item[1]}"
                                 class="w-100 shadow-1-strong rounded mb-4"
                                 alt=""
                         />

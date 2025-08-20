@@ -52,7 +52,7 @@
 
                 <div class="col-lg-8 position-relative p-0" id="webcam_content">
                     <video id="webcam" class="img-fluid w-100 position-absolute" autoplay muted></video>
-                    <img id="marco" src="assets/marco_2023_08_11.png" />
+                    <img id="marco" src="./assets/marco_2025.png" />
                 </div>
                 <div class="col-lg-2">
                     <div id="memories" class="row"></div>
