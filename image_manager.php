@@ -24,10 +24,10 @@ if (isset($_POST['imgB64'])) {
     $out = imagecreatetruecolor($newwidth, $newheight);
     
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
    
-    
+
     echo $path;
 }
 
