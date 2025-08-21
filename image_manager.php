@@ -11,7 +11,7 @@ if (isset($_POST['imgB64'])) {
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
-    $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
+    $path .= 'image_' . date('d_m_Y_H_i_s') . '.png';
     file_put_contents($path, $data);
 
     $border = __DIR__ . '/assets/borde.png';
