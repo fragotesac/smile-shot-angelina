@@ -15,9 +15,9 @@ if (isset($_POST['imgB64'])) {
     file_put_contents($path, $data);
 
     $border = __DIR__ . '/assets/borde.png';
-    $png = imagecreatefrompng($border);
+    $png = imagecreatefrompng(filename: $border);
     
-    $jpeg = imagecreatefromjpeg($path);
+    $jpeg = imagecreatefromjpeg(filename: $path);
 
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
