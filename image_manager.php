@@ -11,7 +11,7 @@ if (isset($_POST['imgB64'])) {
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
-    $path .= 'image_' . date('d_m_Y_H_i_s') . '.png';
+    $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
 
     $border = __DIR__ . '/assets/borde.png';
@@ -22,13 +22,12 @@ if (isset($_POST['imgB64'])) {
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
     $out = imagecreatetruecolor($newwidth, $newheight);
-    imagealphablending($out, true);
-    imagesavealpha($out, true);  
+    
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight,);
+    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
-    imagepng($out, $path);
    
+    
     echo $path;
 }
 
