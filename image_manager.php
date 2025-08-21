@@ -16,18 +16,15 @@ if (isset($_POST['imgB64'])) {
 
     $border = __DIR__ . '/assets/borde.png';
     $png = imagecreatefrompng($border);
-    if (!file_exists($border)) {
-    error_log("❌ borde.png no existe en: $border");
-}
+    
     $jpeg = imagecreatefromjpeg($path);
 
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
     $out = imagecreatetruecolor($newwidth, $newheight);
-    imagealphablending($out, true);
-    imagesavealpha($out, true);
+    
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+    imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
    
     echo $path;
