@@ -4,43 +4,31 @@ require_once 'global.php';
 $imagesPath = __dir__ . '/images-smile/';
 if (isset($_POST['imgB64'])) {
     $data = $_POST['imgB64'];
-$data = str_replace('data:image/png;base64,', '', $data);
-$data = str_replace(' ', '+', $data);
-$data = base64_decode($data);
+    $data = str_replace('data:image/png;base64,', '', $data);
+    $data = str_replace(' ', '+', $data);
+    $data = base64_decode($data);
+    $path = $imagesPath;
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+    $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
+    file_put_contents($path, $data);
 
-// Nombre y ruta final
-$filename = 'image_' . date('d_m_Y_H_i_s') . '.png';
-$path = $imagesPath . $filename;
-file_put_contents($path, $data);
+    $border = __DIR__ . '/assets/borde.png';
+    $png = imagecreatefrompng(filename: $border);
+    
+    $jpeg = imagecreatefromjpeg(filename: $path);
 
-// Crear imagen base desde PNG (formato base64)
-$jpeg = imagecreatefrompng($path);
+    list($width, $height) = getimagesize($path);
+    list($newwidth, $newheight) = getimagesize($border);
+    $out = imagecreatetruecolor($newwidth, $newheight);
+    
+    imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
+    imagejpeg($out, $path, 100);
+   
 
-// Cargar borde
-$border = __DIR__ . '/assets/borde.png';
-$png = imagecreatefrompng($border);
-
-// Obtener dimensiones
-list($width, $height) = getimagesize($path);
-list($borderWidth, $borderHeight) = getimagesize($border);
-
-// Crear imagen con fondo transparente
-$out = imagecreatetruecolor($borderWidth, $borderHeight);
-imagesavealpha($out, true);
-imagealphablending($out, false);
-$transparent = imagecolorallocatealpha($out, 0, 0, 0, 127);
-imagefill($out, 0, 0, $transparent);
-
-// Reescalar imagen base a tamaño del marco
-imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $borderWidth, $borderHeight, $width, $height);
-
-// Superponer borde
-imagecopy($out, $png, 0, 0, 0, 0, $borderWidth, $borderHeight);
-
-// Guardar imagen final (con borde)
-imagepng($out, $path);
-
-echo $path;
+    echo $path;
 
 }
 
