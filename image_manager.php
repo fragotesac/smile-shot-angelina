@@ -24,8 +24,8 @@ if (isset($_POST['imgB64'])) {
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
     imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
+    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
     
-
     echo $path;
 }
 
