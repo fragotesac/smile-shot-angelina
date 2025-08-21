@@ -16,6 +16,9 @@ if (isset($_POST['imgB64'])) {
 
     $border = __DIR__ . '/assets/borde.png';
     $png = imagecreatefrompng($border);
+    if (!file_exists($border)) {
+    error_log("❌ borde.png no existe en: $border");
+}
     $jpeg = imagecreatefromjpeg($path);
 
     list($width, $height) = getimagesize($path);
