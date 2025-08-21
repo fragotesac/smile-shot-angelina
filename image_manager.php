@@ -21,6 +21,8 @@ if (isset($_POST['imgB64'])) {
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
     $out = imagecreatetruecolor($newwidth, $newheight);
+    imagealphablending($out, true);
+    imagesavealpha($out, true);
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
     imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
