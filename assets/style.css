@@ -24,7 +24,8 @@ body {
 
 #marco {
     position: absolute;
-    left: 50px;
+    left: 0px;
+    right: 10px
 }
 
 #nivel-felicidad {
