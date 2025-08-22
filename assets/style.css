@@ -17,6 +17,10 @@ body {
     position: absolute;
 }
 
+#webcam_content {
+    position: relative;
+}
+
 #webcam,
 #marco {
     top: 0px;
