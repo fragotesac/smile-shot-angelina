@@ -23,9 +23,15 @@ body {
 }
 
 #marco {
-    position: absolute;
-    left: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;      /* para cubrir todo el video */
+  height: 100%;     /* para cubrir todo el video */
+  pointer-events: none;  /* que no interfiera con clicks */
+  z-index: 10;      /* que esté encima */
 }
+
 
 #nivel-felicidad {
     text-align: right;
