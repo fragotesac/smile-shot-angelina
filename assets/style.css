@@ -26,6 +26,8 @@ body {
     position: absolute;
     left: 0px;
     top: 0px;
+    z-index: 10; /* o un número mayor que el del video */
+    pointer-events: none;
 }
 
 #nivel-felicidad {
