@@ -12,6 +12,7 @@ body {
     font-family: 'DynaPuff', cursive;
     background-color: transparent;
 }
+
 #webcam {
     z-index: -1;
     left: 0;
@@ -24,7 +25,7 @@ body {
 
 #marco {
     position: absolute;
-    left: 0px;
+    left: 0;
 }
 
 #nivel-felicidad {
