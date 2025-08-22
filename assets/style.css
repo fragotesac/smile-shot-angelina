@@ -14,7 +14,7 @@ body {
 }
 #webcam {
     z-index: -1;
-    left: 0;
+    position: absolute;
 }
 
 #webcam,
