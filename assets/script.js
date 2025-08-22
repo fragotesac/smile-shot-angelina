@@ -37,10 +37,8 @@ async function snapshot(faceapi, canvas, displaySize) {
     canvas.width = webcam.offsetWidth;
     canvas.height = webcam.offsetHeight;
 
-    // Dibuja el video
     ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
 
-    // Cargar el borde (marco.png o borde.png)
     const marcoImg = new Image();
     marcoImg.src = 'assets/borde.png';
 
@@ -48,10 +46,8 @@ async function snapshot(faceapi, canvas, displaySize) {
         marcoImg.onload = resolve;
     });
 
-    // Dibuja el borde encima
     ctx.drawImage(marcoImg, 0, 0, canvas.width, canvas.height);
 
-    // Enviar como PNG para mantener transparencia si la imagen la tiene
     $.ajax({
         type: 'POST',
         url: 'image_manager.php',
