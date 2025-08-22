@@ -7,26 +7,56 @@ if (isset($_POST['imgB64'])) {
     $data = str_replace('data:image/png;base64,', '', $data);
     $data = str_replace(' ', '+', $data);
     $data = base64_decode($data);
-    $path = $imagesPath;
+
+    $path = __DIR__ . '/images-smile/';
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
+
     $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
 
+    // Cargar borde
     $border = __DIR__ . '/assets/borde.png';
     $png = imagecreatefrompng($border);
     $jpeg = imagecreatefromjpeg($path);
 
+    // Verificaciones de carga
+    if (!$jpeg) {
+        error_log("❌ No se pudo cargar la imagen JPEG: $path");
+    }
+    if (!$png) {
+        error_log("❌ No se pudo cargar el borde PNG: $border");
+    }
+
+    // Verifica tamaños
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
+    error_log("📸 Tamaño JPEG: {$width}x{$height}");
+    error_log("🖼️ Tamaño PNG: {$newwidth}x{$newheight}");
+
+    // Crear imagen de salida
     $out = imagecreatetruecolor($newwidth, $newheight);
+    imagesavealpha($out, true);
+    $transparent = imagecolorallocatealpha($out, 0, 0, 0, 127);
+    imagefill($out, 0, 0, $transparent);
+
+    // Escalar la imagen base y copiarla
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+    // Copiar el borde encima
     imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+
+    // 🧪 PRUEBA: Escribir texto para confirmar procesamiento
+    imagestring($out, 5, 10, 10, "Con Marco", imagecolorallocate($out, 255, 0, 0));
+
+    // Guardar imagen final
+    error_log("✅ Se llegó al guardado con borde");
     imagejpeg($out, $path, 100);
 
     echo $path;
 }
+
 
 if (!empty($_GET['list'])) {
     $result = [];
