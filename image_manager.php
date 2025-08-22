@@ -14,22 +14,18 @@ if (isset($_POST['imgB64'])) {
     $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
 
-    $border = __DIR__ . '/assets/borde.png';
-    $png = imagecreatefrompng(filename: $border);
-    
-    $jpeg = imagecreatefromjpeg(filename: $path);
+    $border = __DIR__ . '/assets/marco_2023_08_11.png';
+    $png = imagecreatefrompng($border);
+    $jpeg = imagecreatefromjpeg($path);
 
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
     $out = imagecreatetruecolor($newwidth, $newheight);
-    
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
+    imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
     imagejpeg($out, $path, 100);
-   
 
     echo $path;
-
 }
 
 if (!empty($_GET['list'])) {
