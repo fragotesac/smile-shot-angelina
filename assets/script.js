@@ -30,53 +30,63 @@ async function startVideo() {
 
 }
 
-function snapshot(faceapi, canvas, displaySize) {
+async function snapshot(faceapi, canvas, displaySize) {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    canvas.height = '400'
-    canvas.width = '800'
+    canvas.width = webcam.offsetWidth;
+    canvas.height = webcam.offsetHeight;
 
-    ctx.drawImage(webcam, 0, 0, 800, 450)
-    //webcamContent.append(canvas)
+    ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+
+    const marcoImg = new Image();
+    marcoImg.src = 'assets/borde.png';
+
+    await new Promise(resolve => {
+        marcoImg.onload = resolve;
+    });
+
+    ctx.drawImage(marcoImg, 0, 0, canvas.width, canvas.height);
 
     $.ajax({
         type: 'POST',
         url: 'image_manager.php',
-        data: {imgB64: canvas.toDataURL('image/jpeg').split(';base64,')[1]},
+        data: {
+            imgB64: canvas.toDataURL('image/png').split(';base64,')[1]
+        },
         dataType: 'text',
         async: false,
-        beforeSend: function() {
+        beforeSend: function () {
             clearInterval(interval)
             Swal.fire({
                 title: 'Procesando',
-                text: 'Un momento..',
+                text: 'Un momento...',
                 icon: 'info',
-                showConfirmButton :false,
+                showConfirmButton: false,
                 timer: 1000
             })
         },
-        complete: function(data) {
+        complete: function (data) {
             memories()
-            console.log('Guardado ' + data );
             Swal.fire({
                 title: 'Foto Capturada!',
-                text: 'Un momento..',
-                icon: 'info',
-                showConfirmButton :false,
+                text: 'Listo',
+                icon: 'success',
+                showConfirmButton: false,
                 timer: 2000
             })
 
-            setTimeout(function() {
+            setTimeout(function () {
                 initializeInterval(faceapi, canvas, displaySize)
             }, 2000);
         },
-        error: function(xhr) {
+        error: function (xhr) {
             initializeInterval(faceapi, canvas, displaySize)
             console.log('error', xhr.statusText + xhr.responseText)
         },
     });
 }
+
 
 webcam.addEventListener('play', () => {
     let canvas = document.getElementById('snapshot-canvas')

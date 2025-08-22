@@ -1,5 +1,5 @@
 html {
-    background: url(./fondo-murcielago.jpg) no-repeat center center fixed;
+    background: url(./rosa.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -12,6 +12,7 @@ body {
     font-family: 'DynaPuff', cursive;
     background-color: transparent;
 }
+
 #webcam {
     z-index: -1;
     left: 0;
