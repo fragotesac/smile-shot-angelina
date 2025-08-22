@@ -23,6 +23,7 @@ if (isset($_POST['imgB64'])) {
     $out = imagecreatetruecolor($newwidth, $newheight);
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
     imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+    imagestring($out, 5, 10, 10, "Con Marco", imagecolorallocate($out, 255, 0, 0));
     imagejpeg($out, $path, 100);
 
     echo $path;
