@@ -15,20 +15,29 @@ if (isset($_POST['imgB64'])) {
     file_put_contents($path, $data);
 
     $border = __DIR__ . '/assets/borde.png';
-    $png = imagecreatefrompng(filename: $border);
-    
-    $jpeg = imagecreatefromjpeg(filename: $path);
+$png = imagecreatefrompng($border);
+$jpeg = imagecreatefromjpeg($path);
 
-    list($width, $height) = getimagesize($path);
-    list($newwidth, $newheight) = getimagesize($border);
-    $out = imagecreatetruecolor($newwidth, $newheight);
-    
-    imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
-    imagejpeg($out, $path, 100);
-   
+list($width, $height) = getimagesize($path);
+list($newwidth, $newheight) = getimagesize($border);
 
-    echo $path;
+$out = imagecreatetruecolor($newwidth, $newheight);
+
+// Preparar fondo transparente
+imagesavealpha($out, true);
+$transparent = imagecolorallocatealpha($out, 0, 0, 0, 127);
+imagefill($out, 0, 0, $transparent);
+
+// Escalar la imagen base y copiarla
+imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+// Copiar el borde encima
+imagecopy($out, $png, 0, 0, 0, 0, $newwidth, $newheight);
+
+// Guardar como PNG para conservar transparencia
+$path = preg_replace('/\.jpg$/', '.png', $path);
+imagepng($out, $path);
+
 
 }
 
