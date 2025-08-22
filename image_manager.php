@@ -3,58 +3,30 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'global.php';
 $imagesPath = __dir__ . '/images-smile/';
 if (isset($_POST['imgB64'])) {
-    error_log("✅ Se recibió la imagen base64");
-
     $data = $_POST['imgB64'];
     $data = str_replace('data:image/png;base64,', '', $data);
     $data = str_replace(' ', '+', $data);
     $data = base64_decode($data);
-
-    $path = __DIR__ . '/images-smile/';
+    $path = $imagesPath;
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
-
     $path .= 'image_' . date('d_m_Y_H_i_s') . '.jpg';
     file_put_contents($path, $data);
-
-    if (file_exists($path)) {
-        error_log("✅ Archivo guardado: $path");
-    } else {
-        error_log("❌ No se pudo guardar el archivo en: $path");
-    }
 
     $border = __DIR__ . '/assets/borde.png';
     $png = imagecreatefrompng($border);
     $jpeg = imagecreatefromjpeg($path);
 
-    if (!$jpeg) {
-        error_log("❌ Error cargando imagen jpeg: $path");
-    }
-    if (!$png) {
-        error_log("❌ Error cargando borde png: $border");
-    }
-
     list($width, $height) = getimagesize($path);
     list($newwidth, $newheight) = getimagesize($border);
-
     $out = imagecreatetruecolor($newwidth, $newheight);
-    imagesavealpha($out, true);
-    $transparent = imagecolorallocatealpha($out, 0, 0, 0, 127);
-    imagefill($out, 0, 0, $transparent);
-
     imagecopyresampled($out, $jpeg, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
     imagecopyresampled($out, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
-
-    imagestring($out, 5, 10, 10, "Con Marco", imagecolorallocate($out, 255, 0, 0));
-
-    error_log("✅ Preparado para guardar imagen con borde y texto");
     imagejpeg($out, $path, 100);
 
     echo $path;
 }
-
-
 
 if (!empty($_GET['list'])) {
     $result = [];
