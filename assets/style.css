@@ -19,13 +19,13 @@ body {
 
 #webcam,
 #marco {
-    top: 10px;
+    top: 0px;
 }
 
 #marco {
     position: absolute;
     left: 0px;
-    right: 10px
+    right: 0px
 }
 
 #nivel-felicidad {
